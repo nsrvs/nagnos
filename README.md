@@ -14,6 +14,7 @@ Migration of static servers from A-->B is a painfull any difficult operation. Bu
 The opreation will be done (AS IS MIGRATION) nagnos is the nucleuss-agnostic operation.
 
 **Source system** 
+
 * discovery of services (analyse)
 * create a destination container with needed services ----> Destination System
 * rsync data from A --> B for database create a sql query after the first dump
