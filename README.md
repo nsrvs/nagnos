@@ -6,26 +6,24 @@ migrate one server to another destination, inside a container and expose the ser
 
 
 
-Short summary:
+**Short summary:**
 
 Migration of static servers from A-->B is a painfull any difficult operation. But it can be incredibly easy if you containerize the operation from srouce to destination.
+
 
 The opreation will be done (AS IS MIGRATION) nagnos is the nucleuss-agnostic operation.
 
 
-'''
 Source system ---> discovery of services (analyse)
-			  ---> create a destination container with needed services ----> Destination System
-			  ---> rsync data from A --> B for database create a sql query after the first dump
-			  ---> analyse from the logs (latest 2 month) a window for the migration
-			  ---> up to the moment create all required destination components
-			  ---> before switch create a pod on source system to take over the tunnelling to destination during the operation time..
-			  ---> switch over to the new destination..
+---> create a destination container with needed services ----> Destination System
+---> rsync data from A --> B for database create a sql query after the first dump
+---> analyse from the logs (latest 2 month) a window for the migration
+---> up to the moment create all required destination components
+---> before switch create a pod on source system to take over the tunnelling to destination during the operation time..
+---> switch over to the new destination..
+---> keep the source server (pod will forward the traffic to destination server)
+---> after a while "1-5 days" the source serve will be obsolete..
 			  
-			  
-			  ---> keep the source server (pod will forward the traffic to destination server)
-			  ---> after a while "1-5 days" the source serve will be obsolete..
-'''			  
 			  
 CLI configuration
 Ansible / Terraform
