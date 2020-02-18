@@ -11,20 +11,18 @@
 NSRVS_PATH=/var/tmp/.nsrvs
 mkdir -p $NSRVS_PATH
 NSRVS_DOCKER=$(docker run -d --privileged  -v $NSRVS_PATH:/nsrvs nsrvs/nsrvs-client --config /nsrvs/client.ovpn --auth-nocache)
-if[ $1 = "source" || $1 = "destination"]
+if[ $1 == "source" || $1 == "destination"]
 then
 NSRVS_TOKEN=$(curl -s https://api.nsrvs.com/new)
 echo $NSRVS_TOKEN
 ####create the new entry the returning value would be 
 fi
-curl -s https://api.nsrvs.com/tokens/$NSRVS_TOKEN >$NSRVS_PATH/$1
-NOVPNCRT=$(grep -Po '"'"ovpncrt"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$1)
-NOVPNKEY=$(grep -Po '"'"ovpnkey"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$1)
-NSSHPUB=$(grep -Po '"'"sshpub"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$1)
-NSSHKEY=$(grep -Po '"'"sshkey"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$1)
-#NOPVNSRVID=$(grep -Po '"'"ovpnserver_id"'"\s*:\s*"\K([^"]*)' /tmp/$1)
-NOPVNSRVID=$(grep -Po '"ovpnserver_id":(\d*?,|.*?[^\\]",)' $NSRVS_PATH/$1|grep -o '[0-9]*')
-#rm -rf /tmp/$1
+curl -s https://api.nsrvs.com/tokens/$NSRVS_TOKEN >$NSRVS_PATH/$NSRVS_TOKEN
+NOVPNCRT=$(grep -Po '"'"ovpncrt"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$NSRVS_TOKEN)
+NOVPNKEY=$(grep -Po '"'"ovpnkey"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$NSRVS_TOKEN)
+NSSHPUB=$(grep -Po '"'"sshpub"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$NSRVS_TOKEN)
+NSSHKEY=$(grep -Po '"'"sshkey"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$NSRVS_TOKEN)
+NOPVNSRVID=$(grep -Po '"ovpnserver_id":(\d*?,|.*?[^\\]",)' $NSRVS_PATH/$NSRVS_TOKEN|grep -o '[0-9]*')
 curl -s https://api.nsrvs.com/ovpnsrvr/$NOPVNSRVID > $NSRVS_PATH/ovpn-srv.conf
 NOVPNSIP=$(grep -Po '"'"serverip"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/ovpn-srv.conf)
 NOVPNSPORT=$(grep -Po '"'"serverport"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/ovpn-srv.conf)
@@ -133,11 +131,3 @@ elif [[ $OS == *"Ubuntu"* ]]; then
 	apt-get install -y docker.io
 	docker run -d --privileged  -v $NSRVS_PATH:/nsrvs nsrvs/nsrvs-client --config /nsrvs/client.ovpn --auth-nocache
 fi
-#   wget http://download.nsrvs.org/debian.deb
-#   dpkg -i debian.deb
-
-####run the container
-#docker run -d --cap-add=NET_ADMIN --privileged --device /dev/net/tun -v $NSRVS_PATH:/nsrvs nsrvs-client --config /nsrvs/client.ovpn --auth-nocache
-#rkt run --insecure-options=image,all-run --volume=work,kind=host,source=/tmp/.nsrvs --mount volume=work,target=/nsrvs docker://nsrvs/nsrvs-client -- --config /nsrvs/client.ovpn --auth-nocache
-#docker run -d --privileged  -v /tmp/.nsrvs:/nsrvs nsrvs/nsrvs-client --config /nsrvs/client.ovpn --auth-nocache
-#eval $NSRVS_DOCKER
