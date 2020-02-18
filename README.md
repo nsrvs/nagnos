@@ -1,19 +1,19 @@
 # nagnos
 
-# nsrvs agnostic migration tool
+## nsrvs agnostic migration tool
 
 migrate one server to another destination, inside a container and expose the services on destination container.
 
 
 
-**Short summary:**
+###Short summary:
 
 Migration of static servers from A-->B is a painfull any difficult operation. But it can be incredibly easy if you containerize the operation from srouce to destination.
 
 
 The opreation will be done (AS IS MIGRATION) nagnos is the nucleuss-agnostic operation.
 
-
+```
 Source system ---> discovery of services (analyse)
 ---> create a destination container with needed services ----> Destination System
 ---> rsync data from A --> B for database create a sql query after the first dump
@@ -25,18 +25,13 @@ Source system ---> discovery of services (analyse)
 ---> after a while "1-5 days" the source serve will be obsolete..
 			  
 			  
-CLI configuration
-Ansible / Terraform
-Source root access
+###CLI driven operation
+###tools to be used: Ansible / Terraform
+###requirement: Source/Destination root access
 
-Destination root access
-			  
-			  
-Development phase...
+PROTOTYPE DOC
 
-PROTOTYPE
-
--lets use ansible for orchestration and ignore the analyses, try to figure out if we have a simple wordpress site..
+Assumption: lets use ansible for orchestration and ignore the analyses, try to figure out if we have a simple wordpress site..
 (LAMP )
 
 1.)
