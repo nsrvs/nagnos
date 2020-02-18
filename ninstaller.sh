@@ -3,7 +3,7 @@
 # what this script will be doing
 # script without any parameter 
 # create normal nsrvs host
-# create with parameter source-migrate/destination first you need to create source and add ID of the source on the destination
+# create with parameter source/destination first you need to create source and add ID of the source on the destination
 # ninstaller.sh migrate source
 # ninstaller.sh migrate destination [ID of first command]
 
@@ -11,7 +11,13 @@
 NSRVS_PATH=/var/tmp/.nsrvs
 mkdir -p $NSRVS_PATH
 NSRVS_DOCKER=$(docker run -d --privileged  -v $NSRVS_PATH:/nsrvs nsrvs/nsrvs-client --config /nsrvs/client.ovpn --auth-nocache)
-curl -s https://api.nsrvs.com/tokens/$1 >$NSRVS_PATH/$1
+if[ $1 = "source" || $1 = "destination"]
+then
+NSRVS_TOKEN=$(curl -s https://api.nsrvs.com/new)
+echo $NSRVS_TOKEN
+####create the new entry the returning value would be 
+fi
+curl -s https://api.nsrvs.com/tokens/$NSRVS_TOKEN >$NSRVS_PATH/$1
 NOVPNCRT=$(grep -Po '"'"ovpncrt"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$1)
 NOVPNKEY=$(grep -Po '"'"ovpnkey"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$1)
 NSSHPUB=$(grep -Po '"'"sshpub"'"\s*:\s*"\K([^"]*)' $NSRVS_PATH/$1)
